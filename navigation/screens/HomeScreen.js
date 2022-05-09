@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-na
 import { useState } from 'react/cjs/react.production.min';
 
 
+
 enableLatestRenderer();
 
 const styles = StyleSheet.create({
@@ -20,8 +21,10 @@ const styles = StyleSheet.create({
         },
    });
 
+
+
 export default function HomeScreen({navigation}) {
-    // const [selectedLocation, setSelectedLocation] = useState();
+    // const [selectedLocation, setSelectedLocation] = useState('');
 
     const selectLocationHandler = event => {
         // setSelectedLocation({
@@ -50,10 +53,13 @@ export default function HomeScreen({navigation}) {
                     latitude: 55.715557,
                     longitude: 21.144043,
                     latitudeDelta: 0.015,
-                    longitudeDelta: 0.0121,
+                    longitudeDelta: 0.0121, 
                 }}>
+                    <Marker source={{uri:'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dmap%2BMarker&psig=AOvVaw0Hd66ltTRqbI5W72f8qjbN&ust=1652187909687000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCKi4q9690vcCFQAAAAAdAAAAABAD'}} coordinate={{
+                        latitude: 55.715557,
+                        longitude: 21.144043,
+                    }} style={{width: 100, height: 100}}/>
                 {/* {markerCoordinates && <Marker title='Picked Location' coordinate={markerCoordinates}></Marker>} */}
-                <Marker title='Picked Location' coordinate={selectLocationHandler}></Marker>
             </MapView>
         </View>
     );
