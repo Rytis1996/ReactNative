@@ -21,23 +21,24 @@ const styles = StyleSheet.create({
    });
 
 export default function HomeScreen({navigation}) {
-    const [selectedLocation, setSelectedLocation] = useState();
+    // const [selectedLocation, setSelectedLocation] = useState();
 
     const selectLocationHandler = event => {
-        setSelectedLocation({
-            lat: event.nativeEvent.coordinate.latitude,
-            lng: event.nativeEvent.coordinate.longitude
-        });
+        // setSelectedLocation({
+        //     lat: event.nativeEvent.coordinate.latitude,
+        //     lng: event.nativeEvent.coordinate.longitude
+        // });
+        console.log(event);
     };
 
     let markerCoordinates;
 
-    if (selectedLocation) {
-        markerCoordinates = {
-            latitude: selectedLocation.lat,
-            longitude: selectedLocation.lng
-        }
-    }
+    // if (selectedLocation) {
+    //     markerCoordinates = {
+    //         latitude: selectedLocation.lat,
+    //         longitude: selectedLocation.lng
+    //     }
+    // }
 
     return (
         <View style={styles.container}>
@@ -51,7 +52,8 @@ export default function HomeScreen({navigation}) {
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}>
-                {markerCoordinates && <Marker title='Picked Location' coordinate={markerCoordinates}></Marker>}
+                {/* {markerCoordinates && <Marker title='Picked Location' coordinate={markerCoordinates}></Marker>} */}
+                <Marker title='Picked Location' coordinate={selectLocationHandler}></Marker>
             </MapView>
         </View>
     );
