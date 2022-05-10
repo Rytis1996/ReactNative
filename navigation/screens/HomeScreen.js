@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
 import { useState } from 'react/cjs/react.production.min';
+// import GeoLocation from './geolocation/GeoLocation';
 
 
 
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
 
 
 export default function HomeScreen({navigation}) {
+       
     // const [selectedLocation, setSelectedLocation] = useState('');
 
     const selectLocationHandler = event => {
@@ -47,6 +49,7 @@ export default function HomeScreen({navigation}) {
         <View style={styles.container}>
             <MapView
                 onPress={selectLocationHandler}
+                // console.log(GeoLocation.GeoLocation.data)
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
