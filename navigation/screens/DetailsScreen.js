@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React,  { useState }  from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, enableLatestRenderer } from 'react-native-maps';
 
 enableLatestRenderer();
 
@@ -20,18 +20,15 @@ const styles = StyleSheet.create({
 
 
 export default function DetailsScreen({navigation}) {
-    const locationUrl = 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAiwgE66oGwMBwFH1EN6y2gR6I9vlyGKUk';
+    // const locationUrl = 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAiwgE66oGwMBwFH1EN6y2gR6I9vlyGKUk';
 
-    async function getLocation() {
-        const response = await fetch(locationUrl);
-        const data = await response.json();
-        console.log(data);
-    }
+    
+
 
     return (
         <View style={styles.container}>
             <MapView
-                onPress={getLocation}
+                onPress={DetailsScreen}
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
