@@ -2,6 +2,10 @@
   package="com.stepapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- Prideti premisionai pagal logrocket react native geolocation tutoriala -->
+    <uses-permission android:name="android.permission.ACCESSCOARSELOCATION"/>
+    <uses-permission android:name="android.permission.ACCESSFINELOCATION"/>
 
     <application
       android:name=".MainApplication"

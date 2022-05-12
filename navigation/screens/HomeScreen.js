@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
 
 
-
-
-enableLatestRenderer();
+// enableLatestRenderer();
 
 const styles = StyleSheet.create({
     container: {
@@ -26,14 +24,21 @@ const styles = StyleSheet.create({
 export default function HomeScreen({navigation}) {
        
     const [selectedLocation, setSelectedLocation] = useState('');
-
-    const selectLocationHandler = event => {
+    const currentLocation = useCallback((event) => {
         const {latitude, longitude} = event.nativeEvent.coordinate;
         setSelectedLocation({
             lat: latitude,
             lng: longitude
         });
-    };
+    }, [selectedLocation])
+// Pirminis pagal pvz....
+    // const selectLocationHandler = event => {
+    //     const {latitude, longitude} = event.nativeEvent.coordinate;
+    //     // setSelectedLocation({
+    //     //     lat: latitude,
+    //     //     lng: longitude
+    //     // });
+    // };
 
     let markerCoordinates;
 
@@ -47,7 +52,7 @@ export default function HomeScreen({navigation}) {
     return (
         <View style={styles.container}>
             <MapView
-                onPress={selectLocationHandler}
+                onPress={currentLocation}
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
