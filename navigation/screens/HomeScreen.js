@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 
 // enableLatestRenderer();
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
         },
         map: {
         ...StyleSheet.absoluteFillObject,
+        height: '100%',
+        width: 400
         },
    });
-
-
 
 export default function HomeScreen({navigation}) {
        

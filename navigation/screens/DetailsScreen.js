@@ -1,11 +1,13 @@
 import React, { useState }  from 'react';
 import { View, StyleSheet, Button, Text } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, enableLatestRenderer } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
 import RNLocation from 'react-native-location';
+import { useCallback } from 'react/cjs/react.production.min';
 
-RNLocation.configure({
-    distanceFilter: null
-   })
+// RNLocation.configure({
+//     distanceFilter: null
+//    });
+
    enableLatestRenderer();
 
 const styles = StyleSheet.create({
@@ -27,38 +29,51 @@ const styles = StyleSheet.create({
 export default function DetailsScreen({navigation}) {
     const [viewLocation, isViewLocation] = useState([])
 
-    const permissionHandle = async () => {
-        console.log('here')
-
-        let location;
-
-        if(!permission) {
-            permission = await RNLocation.requestPermission({
-            ios: "whenInUse",
+    // const permissionHandle = 
+    useCallback((async) => {
+        let permission = await RNLocation.checkPermission({
+            ios: 'whenInUse', // or 'always'
             android: {
-                detail: "coarse",
-                rationale: {
-                title: "We need to access your location",
-                message: "We use your location to show where you are on the map",
-                buttonPositive: "OK",
-                buttonNegative: "Cancel"
-                }
+              detail: 'coarse' // or 'fine'
             }
-            })
-            console.log(permission)
-            location = await RNLocation.getLatestLocation({timeout: 100})
-            console.log(location, location.longitude, location.latitude, 
-                location.timestamp)
-        } else {
-            console.log("Here 7")
-            location = await RNLocation.getLatestLocation({timeout: 100})
-            console.log(location, location.longitude, location.latitude,   
-                        location.timestamp)
-        }
-    
-        console.log(permission)
-      }
+          });
+  
+          let location;
+          if(!permission) {
+              permission = await RNLocation.requestPermission({
+                  ios: "whenInUse",
+                  android: {
+                      detail: "coarse",
+                      rationale: {
+                          title: "We need to access your location",
+                          message: "We use your location to show where you are on the map",
+                          buttonPositive: "OK",
+                          buttonNegative: "Cancel"
+                      }
+                  }
+              })
+              location = await RNLocation.getLatestLocation({timeout: 100})
+              isViewLocation({
+              lat: location.latitude,
+              lng: location.longitude,
+              });
+          } else {
+              location = await RNLocation.getLatestLocation({timeout: 100})
+              isViewLocation({
+                lat: location.latitude,
+                lng: location.longitude,
+                });
+            }
+      }, [viewLocation]);
 
+    let pinMarker;
+
+    if(viewLocation) {
+        pinMarker = {
+            latitude: viewLocation.lat,
+            longitude: viewLocation.lng
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -72,6 +87,8 @@ export default function DetailsScreen({navigation}) {
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121, 
                 }}>
+                    <Marker coordinate={ pinMarker } />
+
             </MapView>
             <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
        <Button
