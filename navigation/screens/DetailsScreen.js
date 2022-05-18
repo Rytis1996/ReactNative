@@ -26,7 +26,8 @@ import RNLocation from 'react-native-location';
 
 export default function DetailsScreen({navigation}) {
     const [viewLocation, isViewLocation] = useState('');
-    
+    let location;
+
     const permissionHandle = async () => {
        
         let permission = await RNLocation.checkPermission({
@@ -36,7 +37,6 @@ export default function DetailsScreen({navigation}) {
           }
         });
  
-        let location;
         if(!permission) {
             permission = await RNLocation.requestPermission({
                 ios: "whenInUse",
@@ -81,15 +81,15 @@ export default function DetailsScreen({navigation}) {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
-                    latitude: 37.423,
-                    longitude: -122.0839,
+                    latitude: pinCoordinates.latitude,
+                    longitude: pinCoordinates.longitude,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121, 
                 }}>
                     
                     {pinCoordinates && <Marker title='Picked Location' coordinate={{
                         latitude: pinCoordinates.latitude,
-                        longitude: pinCoordinates.longitude
+                        longitude: pinCoordinates.longitude,
                     }}></Marker>}
     
             </MapView>
