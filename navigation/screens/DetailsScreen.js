@@ -29,14 +29,13 @@ export default function DetailsScreen({navigation}) {
     let location;
 
     const permissionHandle = async () => {
-       
         let permission = await RNLocation.checkPermission({
           ios: 'whenInUse', // or 'always'
           android: {
             detail: 'coarse' // or 'fine'
           }
         });
- 
+        
         if(!permission) {
             permission = await RNLocation.requestPermission({
                 ios: "whenInUse",
@@ -81,8 +80,8 @@ export default function DetailsScreen({navigation}) {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
-                    latitude: pinCoordinates.latitude,
-                    longitude: pinCoordinates.longitude,
+                    latitude: 55.711,
+                    longitude: 21.140,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121, 
                 }}>
