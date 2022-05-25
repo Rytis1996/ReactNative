@@ -1,69 +1,139 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useState, useEffect }  from 'react';
+import { View, StyleSheet, Button, Text } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker, Polyline } from 'react-native-maps';
 import RNLocation from 'react-native-location';
 
-RNLocation.configure({
- distanceFilter: null
-})
 
+    RNLocation.configure({
+    distanceFilter: null
+    });
+
+   enableLatestRenderer();
+
+    const styles = StyleSheet.create({
+        container: {
+            ...StyleSheet.absoluteFillObject,
+            height: '100%',
+            width: 400,
+            flex:1,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            },
+            map: {
+            ...StyleSheet.absoluteFillObject,
+            height: 400,
+            },
+    });
 
 export default function SettingsScreen({navigation}) {
+    const [viewLocation, isViewLocation] = useState('');
+    let locationArray = [];
+    const [storeLocation, setStoreLocation] = useState(locationArray);
+    let location;
+
+
     const permissionHandle = async () => {
-        console.log('here from settings screen')
-     
-     
         let permission = await RNLocation.checkPermission({
           ios: 'whenInUse', // or 'always'
           android: {
             detail: 'coarse' // or 'fine'
           }
         });
-     
-        let location;
-
+        
         if(!permission) {
             permission = await RNLocation.requestPermission({
                 ios: "whenInUse",
                 android: {
                     detail: "coarse",
                     rationale: {
-                    title: "We need to access your location",
-                    message: "We use your location to show where you are on the map",
-                    buttonPositive: "OK",
-                    buttonNegative: "Cancel"
+                        title: "We need to access your location",
+                        message: "We use your location to show where you are on the map",
+                        buttonPositive: "OK",
+                        buttonNegative: "Cancel"
                     }
                 }
-            })
-                console.log(permission)
-                location = await RNLocation.getLatestLocation({timeout: 100})
-                console.log('--------------------------', location, location.longitude, location.latitude, location.timestamp)
-            } else {
-                console.log("Here 7")
-                location = await RNLocation.getLatestLocation({timeout: 100})
-                console.log('--------------------------', location, location.longitude, location.latitude, location.timestamp)
-            }
-            
+            });
+            location = await RNLocation.getLatestLocation({timeout: 100})
+        } else {
+            location = await RNLocation.getLatestLocation({timeout: 100})
+        }
+        isViewLocation({
+            lat: location.latitude,
+            lng: location.longitude
+        });
     }
-    const [pinLocation, setPinLocation] = useState('');
-            const yourLocation = useCallback((location) => {
-                const {latitude, longitude} = location;
-                setPinLocation({
-                    lat: latitude,
-                    lng: longitude
-                });
-            }, [pinLocation])
-            console.log(yourLocation, 'your location from settings ');
+    useEffect(() => {
+        setStoreLocation(prevStoreLocation => viewLocation )
+        console.log(storeLocation, 'IIIIIIIIIIIIIIIIIII')
+    }, [viewLocation]);
+    console.log(storeLocation, '0000000000000');
+
+    let pinCoordinates;
+    if (viewLocation) {
+        pinCoordinates = {
+            latitude: viewLocation.lat,
+            longitude: viewLocation.lng
+        }
+    }
+
+
+    
 
     return (
-        <View style={{ flex:1 , alignItems: 'center', justifyContent: 'center'}}>
-            <Text
-            onPress={() => navigation.navigate('Home')}
-            style = {{ fontSize: 26, fontWeight: 'bold'}}>
-                Settings Screen
-            </Text>
-            <Button title="Get Location"
-                onPress={permissionHandle}
-            />
+        <View style={styles.container}>
+            <MapView
+                onPress={SettingsScreen}
+                provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                style={styles.map}
+                region={{
+                    latitude: 55.711,
+                    longitude: 21.140,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121, 
+                }}>
+                    
+                    {pinCoordinates && <Marker title='Picked Location' coordinate={{
+                        latitude: pinCoordinates.latitude,
+                        longitude: pinCoordinates.longitude,
+                    }}></Marker>}
+
+                    <Polyline 
+                        coordinates={storeLocation}
+                        strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+                        strokeColors={[
+                            '#7F0000',
+                            '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                            '#B24112',
+                            '#E5845C',
+                            '#238C23',
+                            '#7F0000'
+                        ]}
+                        strokeWidth={6}
+
+                    />
+    
+            </MapView>
+            <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
+       <Button
+         title="Get Location"
+         onPress={permissionHandle}
+         />
+     </View>
+     <Text>Latitude: {viewLocation.lat}</Text>
+     <Text>Longitude: {viewLocation.lng}</Text>
+     <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
+       <Button
+         title="Send Location"
+        />
+         </View>
         </View>
+        
+        // <View style={{ flex:1 , alignItems: 'center', justifyContent: 'center'}}>
+        //     <Text
+        //     onPress={() => navigation.navigate('Home')}
+        //     style = {{ fontSize: 26, fontWeight: 'bold'}}>
+        //         Details Screen
+        //     </Text>
+        // </View>
     );
 }

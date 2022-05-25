@@ -1,4 +1,4 @@
-import React, { useState, useCallback }  from 'react';
+import React, { useState }  from 'react';
 import { View, StyleSheet, Button, Text } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-native-maps';
 import RNLocation from 'react-native-location';
@@ -57,11 +57,7 @@ export default function DetailsScreen({navigation}) {
             lat: location.latitude,
             lng: location.longitude
         });
-        // console.log('last view location', viewLocation);
-
     }
-    console.log('last view location 2 ', viewLocation);
-    console.log('last view location 3 ', location);
 
     let pinCoordinates;
     if (viewLocation) {
@@ -70,7 +66,6 @@ export default function DetailsScreen({navigation}) {
             longitude: viewLocation.lng
         }
     }
-
     console.log('pincord', pinCoordinates);
 
     return (
@@ -101,9 +96,7 @@ export default function DetailsScreen({navigation}) {
      <Text>Latitude: {viewLocation.lat}</Text>
      <Text>Longitude: {viewLocation.lng}</Text>
      <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-       <Button
-         title="Send Location"
-        />
+       <Button title="Send Location"/>
          </View>
         </View>
         
