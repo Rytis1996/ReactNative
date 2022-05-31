@@ -101,10 +101,14 @@ export default function SettingsScreen({navigation}) {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={styles.map}
                 region={{
-                    latitude: 37.42342342342342,
-                    longitude: -122.08395287867832,
+                    latitude: 55.711,
+                    longitude: 21.140,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121, 
+                    // latitude: 37.42342342342342,
+                    // longitude: -122.08395287867832,
+                    // latitudeDelta: 0.015,
+                    // longitudeDelta: 0.0121, 
                 }}>
                     
                     {pinCoordinates && <Marker title='Picked Location' coordinate={{
