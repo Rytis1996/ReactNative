@@ -4,7 +4,8 @@ import MapView, { PROVIDER_GOOGLE, enableLatestRenderer, Marker } from 'react-na
 import RNLocation from 'react-native-location';
 
     RNLocation.configure({
-    distanceFilter: null
+    distanceFilter: 10
+    
     });
 
    enableLatestRenderer();
@@ -52,6 +53,7 @@ export default function DetailsScreen({navigation}) {
             location = await RNLocation.getLatestLocation({timeout: 100})
         } else {
             location = await RNLocation.getLatestLocation({timeout: 100})
+            console.log(location);
         }
         isViewLocation({
             lat: location.latitude,
